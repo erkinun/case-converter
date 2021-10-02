@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div class="title">Case Converter</div>
+    <div>
+        <textarea style="width: 500px; height: 300px;"></textarea>
+    </div>
+    <div style="display: flex">
+        <button id="upper-case">Upper Case</button>
+        <button id="lower-case">Lower Case</button>
+        <button id="proper-case">Proper Case</button>
+        <button id="sentence-case">Sentence Case</button>
+        <button id="save-text-file">Save Text File</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+    const upper = document.getElementById("upper-case")
+    const lower = document.getElementById("lower-case")
+    const proper = document.getElementById("proper-case")
+    const sentence = document.getElementById("sentence-case")
+    const save = document.getElementById("save-text-file")
+    const textArea = document.getElementsByTagName('textarea')[0]
+    const upperCase = () => {
+        const text = textArea.value
+        console.log(text.toUpperCase())
+        textArea.value = text.toUpperCase()
+    }
+    const lowerCase = () => {
+        const text = textArea.value
+        textArea.value = text.toLowerCase()
+    }
+
+    const properCase = () => {
+        const text = textArea.value
+        textArea.value = text.split(" ")
+            .filter(w => w !== "")
+            .map(w => w[0].toUpperCase() + w.slice(1)).join(" ")
+    }
+
+    const sentenceCase = () => {
+        const text = textArea.value
+        textArea.value = text.split(".")
+            .filter(w => w !== "")
+            .map(w => w.trim())
+            .map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join(". ") + "."
+    }
+
+    function download(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    upper.addEventListener('click', upperCase)
+    lower.addEventListener('click', lowerCase)
+    proper.addEventListener('click', properCase)
+    sentence.addEventListener('click', sentenceCase)
+    save.addEventListener('click', () => {
+        download('text.txt', textArea.value)
+    })
+
+</script>
+</html>
